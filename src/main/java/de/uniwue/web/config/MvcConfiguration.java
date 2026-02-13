@@ -25,10 +25,10 @@ public class MvcConfiguration implements WebMvcConfigurer {
 	/*
 	 * System library for openCV 
 	 */
-	static {
-		nu.pattern.OpenCV.loadShared();
-		System.loadLibrary(org.opencv.core.Core.NATIVE_LIBRARY_NAME);
-	}
+	// static {
+	// 	nu.pattern.OpenCV.loadShared();
+	// 	System.loadLibrary(org.opencv.core.Core.NATIVE_LIBRARY_NAME);
+	// }
 	
 	@Bean
 	public ViewResolver getViewResolver() {

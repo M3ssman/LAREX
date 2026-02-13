@@ -2,7 +2,8 @@ package de.uniwue.web.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
+
+import de.uniwue.web.config.UriUtils;
 import java.nio.file.Files;
 import java.util.*;
 
@@ -98,19 +99,19 @@ public class ViewerController {
 				List of paths is mapped as an object, then cast to String and
 				finally split with path separators to create desired List
 			 */
-			Map<String, Object> map = mapper.readValue(java.net.URLDecoder.decode(fileMapString, StandardCharsets.UTF_8.name()), TreeMap.class);
+			Map<String, Object> map = mapper.readValue(UriUtils.decodeURIComponent(fileMapString), TreeMap.class);
 			for(Map.Entry<String, Object> entry : map.entrySet()) {
 				List<String> pathList = (List<String>) entry.getValue();
 				fileMap.put(entry.getKey(), pathList);
 			}
-			mimeMap = mapper.readValue(java.net.URLDecoder.decode(mimeMapString, StandardCharsets.UTF_8.name()), TreeMap.class);
+			mimeMap = mapper.readValue(UriUtils.decodeURIComponent(mimeMapString), TreeMap.class);
 		} catch (IOException e) {
 			logger.error("Internal Exception {}", e.getMessage());
 			return "redirect:/error/500";
 		}
 		if(customFlag.equals("true") && !customFolder.endsWith(File.separator)) { customFolder += File.separator; }
 		for(Map.Entry<String, List<String>> entry : fileMap.entrySet()) {
-			String fileName = java.net.URLDecoder.decode(entry.getKey().replaceAll("\"" , ""));
+			String fileName = UriUtils.decodeURIComponent(entry.getKey().replaceAll("\"" , ""));
 			String fileKey = fileName.split("\\.")[0];
 			List<String> filePathList = entry.getValue();
 			String xmlPath;

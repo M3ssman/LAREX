@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.regex.Pattern;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -62,10 +63,11 @@ public class LarexFacade {
 			try{
 				List<String> imagesWithExt = new LinkedList<>();
 				String extensionMatchString = "(" + String.join("|", Constants.IMG_EXTENSIONS) + ")";
+				String quotedName = Pattern.quote(page.getName());
 				for(Map.Entry<String ,List<String>> entry : fileManager.getLocalImageMap().entrySet()) {
-					if(entry.getKey().matches("^" + page.getName() + "\\..*")) {
+					if(entry.getKey().matches("^" + quotedName + "\\..*")) {
 						imagesWithExt.addAll(entry.getValue());
-					} else if(entry.getValue().get(0).matches(".*" + page.getName() + "\\." + extensionMatchString)){
+					} else if(entry.getValue().get(0).matches(".*" + quotedName + "\\." + extensionMatchString)){
 						imagesWithExt.addAll(entry.getValue());
 					}
 				}

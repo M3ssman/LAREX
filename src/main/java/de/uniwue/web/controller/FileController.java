@@ -2,7 +2,8 @@ package de.uniwue.web.controller;
 
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.nio.charset.StandardCharsets;
+
+import de.uniwue.web.config.UriUtils;
 import java.nio.file.Files;
 import java.util.*;
 import java.util.zip.ZipEntry;
@@ -112,7 +113,7 @@ public class FileController {
 
 			File imageFile;
 			byte[] imageBytes = null;
-			String image = java.net.URLDecoder.decode(imageEnc, StandardCharsets.UTF_8.name()).replaceAll("‡","/");
+			String image = UriUtils.decodeURIComponent(imageEnc).replaceAll("‡","/");
 			if(image.startsWith("\"")) {	image = image.substring(1); }
 			if(fileManager.checkFlat()) {
 				// Find file with image name

@@ -1,8 +1,9 @@
 package de.uniwue.web.controller;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
+
+import de.uniwue.web.config.UriUtils;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
@@ -114,12 +115,7 @@ public class LibraryController {
 	@RequestMapping(value = "library/getPageLocations", method = RequestMethod.POST, headers = "Accept=*/*")
 	public @ResponseBody Map<String, List<String>> getPageLocations(@RequestParam(value = "bookid") int bookid, @RequestParam(value = "bookpath") String bookpath, @RequestParam(value = "booktype") String type) throws IOException {
 		fileManager.init(servletContext);
-		String booktype = "";
-		try {
-			booktype = java.net.URLDecoder.decode(type, StandardCharsets.UTF_8.name());
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
+		String booktype = UriUtils.decodeURIComponent(type);
 		File baseFolder = new File(bookpath);
 		if(!baseFolder.isDirectory()) {
 			throw new IOException("Path is no directory, but should be in this instance");
@@ -150,12 +146,7 @@ public class LibraryController {
 		if (!fileManager.isInit()) {
 			fileManager.init(servletContext);
 		}
-		String path = "";
-		try {
-			path = java.net.URLDecoder.decode(metsPath, StandardCharsets.UTF_8.name());
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
+		String path = UriUtils.decodeURIComponent(metsPath);
 		File metsFile = new File(path + File.separator + "mets.xml");
 		if(!metsFile.exists()) {
 			metsFile = new File(path + File.separator + "data" + File.separator + "mets.xml");
